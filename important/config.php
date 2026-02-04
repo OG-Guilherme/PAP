@@ -101,13 +101,13 @@ function isAdmin() {
 
 function requireLogin() {
     if(!isLoggedIn()) {
-        redirect('login.php');
+        redirect('../site/login.php');
     }
 }
 
 function requireAdmin() {
     if(!isAdmin()) {
-        redirect('index.php');
+        redirect('../admin/index.php');
     }
 }
 

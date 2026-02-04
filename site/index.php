@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once 'config.php';
+require_once '../important/config.php';
 
 // Definir tema padrão se não existir
 if(!isset($_SESSION['tema'])) {
@@ -10,7 +10,7 @@ if(!isset($_SESSION['tema'])) {
 // Trocar tema
 if(isset($_GET['toggle_theme'])) {
     $_SESSION['tema'] = $_SESSION['tema'] === 'claro' ? 'escuro' : 'claro';
-    header('Location: index.php');
+    header('Location: ../site/index.php');
     exit;
 }
 
@@ -40,7 +40,7 @@ $cursos = $stmt->fetchAll();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EduWeb - Início</title>
-    <link rel="stylesheet" href="style.css?v=2">
+    <link rel="stylesheet" href="../important/style.css?v=2">
 </head>
 <body class="<?= getThemeClass() ?>">
     <header>
@@ -49,9 +49,9 @@ $cursos = $stmt->fetchAll();
             <div class="header-top-content">
                 <nav class="top-nav">
                     <ul>
-                        <li><a href="noticias.php">Notícias</a></li>
-                        <li><a href="eventos.php">Eventos</a></li>
-                        <li><a href="contactos.php">Contactos</a></li>
+                        <li><a href="../site/noticias.php">Notícias</a></li>
+                        <li><a href="../site/eventos.php">Eventos</a></li>
+                        <li><a href="../site/contactos.php">Contactos</a></li>
                     </ul>
                 </nav>
                 <div class="top-actions">
@@ -153,7 +153,7 @@ $cursos = $stmt->fetchAll();
                 </div>
             <?php endif; ?>
             <div style="text-align: center; margin-top: 40px;">
-                <a href="noticias.php" class="btn">Ver todas as notícias</a>
+                <a href="../site/noticias.php" class="btn">Ver todas as notícias</a>
             </div>
         </section>
 
@@ -174,13 +174,13 @@ $cursos = $stmt->fetchAll();
                         <h3><?= sanitize($e['titulo']) ?></h3>
                         <p class="meta">📅 <?= formatDateTime($e['data_evento']) ?><br>📍 <?= sanitize($e['local']) ?></p>
                         <p><?= sanitize(substr($e['descricao'], 0, 120)) ?>...</p>
-                        <a href="evento.php?id=<?= $e['id'] ?>">Ver detalhes →</a>
+                        <a href="../site/evento.php?id=<?= $e['id'] ?>">Ver detalhes →</a>
                     </div>
                     <?php endforeach; ?>
                 </div>
             <?php endif; ?>
             <div style="text-align: center; margin-top: 40px;">
-                <a href="eventos.php" class="btn">Ver todos os eventos</a>
+                <a href="../site/eventos.php" class="btn">Ver todos os eventos</a>
             </div>
         </section>
 
@@ -196,12 +196,12 @@ $cursos = $stmt->fetchAll();
                     <h3><?= sanitize($c['nome']) ?></h3>
                     <p class="meta">📚 <?= sanitize($c['tipo']) ?> • ⏱️ <?= $c['duracao_anos'] ?> anos</p>
                     <p><?= sanitize(substr($c['descricao'], 0, 130)) ?>...</p>
-                    <a href="curso.php?id=<?= $c['id'] ?>">Saber mais →</a>
+                    <a href="../site/curso.php?id=<?= $c['id'] ?>">Saber mais →</a>
                 </div>
                 <?php endforeach; ?>
             </div>
             <div style="text-align: center; margin-top: 40px;">
-                <a href="cursos.php" class="btn">Ver todos os cursos</a>
+                <a href="../site/cursos.php" class="btn">Ver todos os cursos</a>
             </div>
         </section>
         <?php endif; ?>
@@ -216,9 +216,9 @@ $cursos = $stmt->fetchAll();
                 </div>
                 <div class="footer-section">
                     <h3>Links Rápidos</h3>
-                    <a href="sobre.php">Sobre Nós</a>
-                    <a href="cursos.php">Cursos</a>
-                    <a href="contactos.php">Contactos</a>
+                    <a href="../site/sobre.php">Sobre Nós</a>
+                    <a href="../site/cursos.php">Cursos</a>
+                    <a href="../site/contactos.php">Contactos</a>
                 </div>
                 <div class="footer-section">
                     <h3>Contacto</h3>

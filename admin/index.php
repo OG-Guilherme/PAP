@@ -1,10 +1,10 @@
 <?php
 session_start();
-require_once '../conexao.php';
+require_once '../important/conexao.php';
 
 // Verificar se é admin
 if(!isset($_SESSION['user_tipo']) || $_SESSION['user_tipo'] !== 'admin') {
-    header('Location: ../login.php');
+    header('Location: ../site/login.php');
     exit;
 }
 
@@ -111,12 +111,12 @@ $logs = $pdo->query("SELECT l.*, u.nome FROM logs_admin l JOIN utilizadores u ON
 
     <div class="admin-container">
         <div class="sidebar">
-            <a href="index.php" class="active">📊 Dashboard</a>
-            <a href="noticias.php">📰 Notícias</a>
-            <a href="eventos.php">📅 Eventos</a>
-            <a href="cursos.php">📚 Cursos</a>
-            <a href="utilizadores.php">👥 Utilizadores</a>
-            <a href="comentarios.php">💬 Comentários <?php if($stats['comentarios'] > 0): ?>(<?php echo $stats['comentarios']; ?>)<?php endif; ?></a>
+            <a href="../site/index.php" class="active">📊 Dashboard</a>
+            <a href="../site/noticias.php">📰 Notícias</a>
+            <a href="../site/eventos.php">📅 Eventos</a>
+            <a href="../site/cursos.php">📚 Cursos</a>
+            <a href="../site/utilizadores.php">👥 Utilizadores</a>
+            <a href="../site/comentarios.php">💬 Comentários <?php if($stats['comentarios'] > 0): ?>(<?php echo $stats['comentarios']; ?>)<?php endif; ?></a>
             <a href="logs.php">📋 Logs</a>
             <hr style="border: none; border-top: 1px solid #34495e; margin: 15px 0;">
             <a href="../index.php">🏠 Ver Site</a>

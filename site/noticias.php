@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once 'conexao.php';
+require_once '../important/conexao.php';
 
 if(isset($_POST['toggle_theme'])) {
     $_SESSION['theme'] = ($_SESSION['theme'] ?? 'light') === 'light' ? 'dark' : 'light';

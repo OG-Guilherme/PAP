@@ -1,9 +1,9 @@
 <?php
 session_start();
-require_once 'conexao.php';
+require_once '../important/conexao.php';
 
 if(isset($_SESSION['user_id'])) {
-    header('Location: index.php');
+    header('Location: ../site/index.php');
     exit;
 }
 
@@ -64,7 +64,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['registar'])) {
 <head>
     <meta charset="utf-8">
     <title>Criar Conta - EduWeb</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="../important/style.css">
     <style>
         .registar-container {
             max-width: 500px;

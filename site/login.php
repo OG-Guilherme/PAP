@@ -48,7 +48,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login'])) {
 <head>
     <meta charset="utf-8">
     <title>Login - EduWeb</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="../important/style.css">
     <style>
         .login-container {
             max-width: 450px;

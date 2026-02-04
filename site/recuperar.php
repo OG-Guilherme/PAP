@@ -44,7 +44,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['recuperar'])) {
 <head>
     <meta charset="utf-8">
     <title>Recuperar Password - EduWeb</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="../important/style.css">
     <style>
         .recuperar-container {
             max-width: 450px;

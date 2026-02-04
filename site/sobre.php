@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once 'config.php';
+require_once '../important/config.php';
 
 if(!isset($_SESSION['tema'])) {
     $_SESSION['tema'] = 'claro';
@@ -18,7 +18,7 @@ if(isset($_GET['toggle_theme'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sobre Nós - EduWeb</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="../important/style.css">
     <style>
         .sobre-hero {
             background: linear-gradient(135deg, var(--cor-principal), var(--cor-secundaria));

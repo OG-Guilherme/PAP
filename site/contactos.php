@@ -1,5 +1,5 @@
 <?php
-require_once 'config.php';
+require_once '../important/config.php';
 
 if(!isset($_SESSION['tema'])) {
     $_SESSION['tema'] = 'claro';
@@ -33,7 +33,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Contactos - EduWeb</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="../important/style.css">
     <style>
         .alert { padding: 15px; margin: 20px 0; border-radius: 5px; }
         .alert.success { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }

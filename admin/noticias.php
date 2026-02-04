@@ -96,16 +96,16 @@ $noticias = $pdo->query("SELECT n.*, u.nome as autor FROM noticias n JOIN utiliz
 
     <div class="admin-container">
         <div class="sidebar">
-            <a href="index.php">📊 Dashboard</a>
-            <a href="noticias.php" class="active">📰 Notícias</a>
-            <a href="eventos.php">📅 Eventos</a>
-            <a href="cursos.php">📚 Cursos</a>
-            <a href="utilizadores.php">👥 Utilizadores</a>
-            <a href="comentarios.php">💬 Comentários</a>
+            <a href="../site/index.php">📊 Dashboard</a>
+            <a href="../site/noticias.php" class="active">📰 Notícias</a>
+            <a href="../site/eventos.php">📅 Eventos</a>
+            <a href="../site/cursos.php">📚 Cursos</a>
+            <a href="../site/utilizadores.php">👥 Utilizadores</a>
+            <a href="../site/comentarios.php">💬 Comentários</a>
             <a href="logs.php">📋 Logs</a>
             <hr style="border: none; border-top: 1px solid #34495e; margin: 15px 0;">
-            <a href="../index.php">🏠 Ver Site</a>
-            <a href="../logout.php">🚪 Sair</a>
+            <a href="../site/index.php">🏠 Ver Site</a>
+            <a href="../site/logout.php">🚪 Sair</a>
         </div>
 
         <div class="main-content">
