@@ -168,10 +168,10 @@ $cats = $pdo->query("SELECT DISTINCT categoria FROM noticias WHERE categoria IS 
                 <h1>EduWeb</h1>
             </div>
             <nav>
-                <a href="index.php">Início</a>
-                <a href="noticias.php">Notícias</a>
-                <a href="eventos.php">Eventos</a>
-                <a href="contactos.php">Contactos</a>
+                <a href="../site/index.php">Início</a>
+                <a href="../site/noticias.php">Notícias</a>
+                <a href="../site/eventos.php">Eventos</a>
+                <a href="../site/contactos.php">Contactos</a>
             </nav>
             <form method="POST" style="display: inline;">
                 <button type="submit" name="toggle_theme" class="theme-btn">
@@ -195,7 +195,7 @@ $cats = $pdo->query("SELECT DISTINCT categoria FROM noticias WHERE categoria IS 
                 <?php endforeach; ?>
             </select>
             <button type="submit">Filtrar</button>
-            <a href="noticias.php"><button type="button">Limpar</button></a>
+            <a href="../site/noticias.php"><button type="button">Limpar</button></a>
         </form>
 
         <div class="grid">
@@ -216,7 +216,7 @@ $cats = $pdo->query("SELECT DISTINCT categoria FROM noticias WHERE categoria IS 
                         <?php endif; ?>
                     </p>
                     <p><?php echo htmlspecialchars(substr($n['conteudo'], 0, 150)); ?>...</p>
-                    <a href="noticia.php?id=<?php echo $n['id']; ?>">Ler mais →</a>
+                    <a href="../site/noticia.php?id=<?php echo $n['id']; ?>">Ler mais →</a>
                 </div>
                 <?php endforeach; ?>
             <?php endif; ?>

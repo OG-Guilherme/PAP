@@ -1,6 +1,6 @@
 <?php
 // Script para verificar e corrigir o utilizador admin
-require_once 'conexao.php';
+require_once '../important/conexao.php';
 
 echo "<h2>Verificação de Utilizadores Admin</h2>";
 

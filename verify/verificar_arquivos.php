@@ -48,10 +48,10 @@ echo "<div class='card'>";
 echo "<h2>2️⃣ Verificação de Arquivos Essenciais</h2>";
 
 $arquivos = [
-    'conexao.php' => 'Arquivo de conexão',
-    'config.php' => 'Arquivo de configuração',
-    'login.php' => 'Página de login',
-    'index.php' => 'Página inicial',
+    '../important/conexao.php' => 'Arquivo de conexão',
+    '../important/config.php' => 'Arquivo de configuração',
+    '../site/login.php' => 'Página de login',
+    '../site/index.php' => 'Página inicial',
     'admin/index.php' => 'Painel admin'
 ];
 
@@ -73,11 +73,11 @@ if(file_exists('conexao.php') && file_exists('config.php')) {
     echo "<p>Recomendo usar apenas um deles. Veja abaixo qual está sendo usado em cada arquivo.</p>";
     echo "</div>";
 } elseif(file_exists('conexao.php')) {
-    echo "<div class='info'>ℹ️ Usando <code>conexao.php</code> (sem config.php)</div>";
+    echo "<div class='info'>ℹ️ Usando <code>../important/conexao.php</code> (sem ../important/config.php)</div>";
 } elseif(file_exists('config.php')) {
-    echo "<div class='info'>ℹ️ Usando <code>config.php</code> (sem conexao.php)</div>";
+    echo "<div class='info'>ℹ️ Usando <code>../important/config.php</code> (sem ../important/conexao.php)</div>";
 } else {
-    echo "<div class='error'>❌ NEM conexao.php NEM config.php existem!</div>";
+    echo "<div class='error'>❌ NEM ../important/conexao.php NEM config.php existem!</div>";
 }
 
 echo "</div>";
@@ -107,8 +107,8 @@ function verificar_includes($arquivo) {
 }
 
 $arquivos_para_verificar = [
-    'index.php',
-    'login.php',
+    '../site/index.php',
+    '../site/login.php',
     'admin/index.php',
     'admin/noticias.php'
 ];
@@ -139,10 +139,10 @@ foreach($arquivos_para_verificar as $arquivo) {
             echo "<li>❌ <code>{$inc['tipo']} '{$inc['arquivo']}'</code> - <span style='color: red;'>NÃO EXISTE!</span>";
             
             // Sugestão de correção
-            if(strpos($inc['arquivo'], 'config.php') !== false && file_exists('conexao.php')) {
+            if(strpos($inc['arquivo'], '../important/config.php') !== false && file_exists('conexao.php')) {
                 echo "<br><small>💡 Sugestão: Trocar para <code>require_once 'conexao.php';</code></small>";
-            } elseif(strpos($inc['arquivo'], '../config.php') !== false && file_exists('conexao.php')) {
-                echo "<br><small>💡 Sugestão: Trocar para <code>require_once '../conexao.php';</code></small>";
+            } elseif(strpos($inc['arquivo'], '../important/config.php') !== false && file_exists('conexao.php')) {
+                echo "<br><small>💡 Sugestão: Trocar para <code>require_once '../important/conexao.php';</code></small>";
             }
             echo "</li>";
         }
@@ -179,16 +179,16 @@ if(file_exists('admin/index.php')) {
     }
     
     // Verificar se precisa corrigir
-    if(strpos($admin_content, "require_once 'config.php'") !== false || 
-       strpos($admin_content, 'require_once "config.php"') !== false ||
-       strpos($admin_content, "require 'config.php'") !== false) {
+    if(strpos($admin_content, "require_once '../important/config.php'") !== false || 
+       strpos($admin_content, 'require_once "../important/config.php"') !== false ||
+       strpos($admin_content, "require '../important/config.php'") !== false) {
         
         echo "<div class='warning'>";
         echo "<h3>🔧 CORREÇÃO NECESSÁRIA</h3>";
         echo "<p>Troque a linha 3 de:</p>";
-        echo "<pre>require_once 'config.php';</pre>";
+        echo "<pre>require_once '../important/config.php';</pre>";
         echo "<p>Para:</p>";
-        echo "<pre>require_once '../conexao.php';</pre>";
+        echo "<pre>require_once '../important/conexao.php';</pre>";
         echo "</div>";
         
         if(isset($_POST['corrigir_admin'])) {
@@ -196,9 +196,9 @@ if(file_exists('admin/index.php')) {
             copy('admin/index.php', 'admin/index.php.backup');
             
             // Corrigir
-            $admin_content = str_replace("require_once 'config.php'", "require_once '../conexao.php'", $admin_content);
-            $admin_content = str_replace('require_once "config.php"', "require_once '../conexao.php'", $admin_content);
-            $admin_content = str_replace("require 'config.php'", "require_once '../conexao.php'", $admin_content);
+            $admin_content = str_replace("require_once '../important/config.php'", "require_once '../important/conexao.php'", $admin_content);
+            $admin_content = str_replace('require_once "../important/config.php"', "require_once '../important/conexao.php'", $admin_content);
+            $admin_content = str_replace("require '../important/config.php'", "require_once '../important/conexao.php'", $admin_content);
             
             file_put_contents('admin/index.php', $admin_content);
             

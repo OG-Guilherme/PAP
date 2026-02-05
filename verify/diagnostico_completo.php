@@ -21,7 +21,7 @@ echo "<style>
 echo "<div class='card'>";
 echo "<h2>1️⃣ Teste de Conexão à Base de Dados</h2>";
 try {
-    require_once 'conexao.php';
+    require_once '../important/conexao.php';
     echo "<div class='success'>✅ Conexão estabelecida com sucesso!</div>";
     echo "<p>Host: localhost | Database: pap</p>";
 } catch(Exception $e) {
@@ -179,7 +179,7 @@ echo "</div>";
 // Teste 7: Verificar o código do login.php
 echo "<div class='card'>";
 echo "<h2>7️⃣ Análise do Código login.php</h2>";
-if(file_exists('login.php')) {
+if(file_exists('../site/login.php')) {
     $login_content = file_get_contents('login.php');
     
     echo "<h3>Verificações:</h3>";
