@@ -43,143 +43,71 @@ $cats = $pdo->query("SELECT DISTINCT categoria FROM noticias WHERE categoria IS 
 <head>
     <meta charset="utf-8">
     <title>Notícias - EduWeb</title>
-    <style>
-        :root[data-theme="light"] {
-            --bg: #ffffff;
-            --text: #000000;
-            --card-bg: #f5f5f5;
-            --border: #ddd;
-            --primary: #f4a442;
-        }
-        
-        :root[data-theme="dark"] {
-            --bg: #1a1a1a;
-            --text: #ffffff;
-            --card-bg: #2a2a2a;
-            --border: #444;
-            --primary: #8b5cf6;
-        }
-        
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        
-        body {
-            font-family: Arial, sans-serif;
-            background: var(--bg);
-            color: var(--text);
-        }
-        
-        header {
-            background: var(--primary);
-            padding: 15px 20px;
-            color: white;
-        }
-        
-        .header-content {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        nav a {
-            color: white;
-            text-decoration: none;
-            margin: 0 15px;
-        }
-        
-        .theme-btn {
-            background: rgba(255,255,255,0.2);
-            color: white;
-            border: none;
-            padding: 8px 15px;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 40px 20px;
-        }
-        
-        .filtros {
-            background: var(--card-bg);
-            padding: 20px;
-            border-radius: 8px;
-            margin-bottom: 30px;
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-        
-        input, select {
-            padding: 8px;
-            border: 1px solid var(--border);
-            border-radius: 5px;
-            background: var(--bg);
-            color: var(--text);
-        }
-        
-        button {
-            background: var(--primary);
-            color: white;
-            border: none;
-            padding: 8px 15px;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 20px;
-        }
-        
-        .card {
-            background: var(--card-bg);
-            border: 1px solid var(--border);
-            padding: 20px;
-            border-radius: 8px;
-        }
-        
-        .card img {
-            width: 100%;
-            height: 180px;
-            object-fit: cover;
-            border-radius: 5px;
-            margin-bottom: 15px;
-        }
-        
-        .meta {
-            font-size: 0.9em;
-            color: #888;
-            margin: 10px 0;
-        }
-        
-        a { color: var(--primary); text-decoration: none; }
-        a:hover { text-decoration: underline; }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body class="<?php echo $theme === 'light' ? 'tema-claro' : 'tema-escuro'; ?>">
     <header>
-        <div class="header-content">
-            <div>
-                <h1>EduWeb</h1>
+        <!-- Linha superior -->
+        <div class="header-top">
+            <div class="header-top-content">
+                <nav class="top-nav">
+                    <ul>
+                        <li><a href="noticias.php">Notícias</a></li>
+                        <li><a href="eventos.php">Eventos</a></li>
+                        <li><a href="contactos.php">Contactos</a></li>
+                    </ul>
+                </nav>
+                <div class="top-actions">
+                    <?php if(isset($_SESSION['user_id'])): ?>
+                        <a href="perfil.php">Perfil</a>
+                        <?php if(isset($_SESSION['user_tipo']) && $_SESSION['user_tipo'] === 'admin'): ?>
+                            <a href="admin/">Admin</a>
+                        <?php endif; ?>
+                    <?php else: ?>
+                        <a href="login.php">Entrar</a>
+                    <?php endif; ?>
+                    <form method="POST" style="display: inline; margin: 0;">
+                        <button type="submit" name="toggle_theme" class="theme-toggle">
+                            <?php echo $theme === 'light' ? '🌙' : '☀️'; ?>
+                        </button>
+                    </form>
+                </div>
             </div>
-            <nav>
-                <a href="../site/index.php">Início</a>
-                <a href="../site/noticias.php">Notícias</a>
-                <a href="../site/eventos.php">Eventos</a>
-                <a href="../site/contactos.php">Contactos</a>
-            </nav>
-            <form method="POST" style="display: inline;">
-                <button type="submit" name="toggle_theme" class="theme-btn">
-                    <?php echo $theme === 'light' ? '🌙' : '☀️'; ?>
-                </button>
-            </form>
+        </div>
+        
+        <!-- Linha principal -->
+        <div class="header-main">
+            <div class="header-content">
+                <nav class="nav-left main-nav">
+                    <ul>
+                        <li><a href="index.php">Início</a></li>
+                        <li><a href="sobre.php">Sobre Nós</a></li>
+                    </ul>
+                </nav>
+                <div style="width: 200px;"></div>
+                <nav class="nav-right main-nav">
+                    <ul>
+                        <li><a href="cursos.php">Cursos</a></li>
+                        <li><a href="sobre.php">Admissões</a></li>
+                    </ul>
+                </nav>
+            </div>
+            <div class="logo-area">
+                <a href="index.php">
+                    <img src="logo-<?php echo $theme === 'light' ? 'escuro' : 'claro'; ?>.png" alt="EduWeb" class="logo">
+                </a>
+            </div>
         </div>
     </header>
+
+    <script>
+    window.addEventListener('load', function() {
+        document.body.classList.add('slide-in');
+        setTimeout(function() {
+            document.body.classList.remove('slide-in');
+        }, 300);
+    });
+    </script>
 
     <div class="container">
         <h2>Notícias</h2>
@@ -195,7 +123,7 @@ $cats = $pdo->query("SELECT DISTINCT categoria FROM noticias WHERE categoria IS 
                 <?php endforeach; ?>
             </select>
             <button type="submit">Filtrar</button>
-            <a href="../site/noticias.php"><button type="button">Limpar</button></a>
+            <a href="noticias.php"><button type="button">Limpar</button></a>
         </form>
 
         <div class="grid">
@@ -216,7 +144,7 @@ $cats = $pdo->query("SELECT DISTINCT categoria FROM noticias WHERE categoria IS 
                         <?php endif; ?>
                     </p>
                     <p><?php echo htmlspecialchars(substr($n['conteudo'], 0, 150)); ?>...</p>
-                    <a href="../site/noticia.php?id=<?php echo $n['id']; ?>">Ler mais →</a>
+                    <a href="noticia.php?id=<?php echo $n['id']; ?>">Ler mais →</a>
                 </div>
                 <?php endforeach; ?>
             <?php endif; ?>

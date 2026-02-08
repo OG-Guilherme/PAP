@@ -1,19 +1,21 @@
 <?php
+session_start();
 require_once '../important/config.php';
 
 if(!isset($_SESSION['tema'])) {
     $_SESSION['tema'] = 'claro';
 }
 
-if(isset($_GET['toggle_theme'])) {
+if(isset($_POST['toggle_theme'])) {
     $_SESSION['tema'] = $_SESSION['tema'] === 'claro' ? 'escuro' : 'claro';
-    header('Location: contactos.php');
-    exit;
 }
+
+// Compatibilidade com o sistema de theme
+$theme = $_SESSION['tema'] === 'claro' ? 'light' : 'dark';
 
 $mensagem = '';
 
-if($_SERVER['REQUEST_METHOD'] === 'POST') {
+if($_SERVER['REQUEST_METHOD'] === 'POST' && !isset($_POST['toggle_theme'])) {
     $nome = $_POST['nome'] ?? '';
     $email = $_POST['email'] ?? '';
     $assunto = $_POST['assunto'] ?? '';
@@ -28,52 +30,76 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 ?>
 <!DOCTYPE html>
-<html lang="pt" class="<?= getThemeClass() ?>">
+<html lang="pt" data-theme="<?php echo $theme; ?>">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Contactos - EduWeb</title>
-    <link rel="stylesheet" href="../important/style.css">
-    <style>
-        .alert { padding: 15px; margin: 20px 0; border-radius: 5px; }
-        .alert.success { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
-        .alert.error { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
-        .contacto-info { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; margin: 40px 0; }
-        .contacto-card { background: var(--cor-fundo-alt); padding: 25px; border-radius: 8px; border: 1px solid var(--cor-borda); }
-        .contacto-card h3 { margin-bottom: 15px; color: var(--cor-principal); }
-    </style>
+    <link rel="stylesheet" href="style.css?v=2">
 </head>
-<body class="<?= getThemeClass() ?>">
+<body class="<?php echo getThemeClass(); ?>">
     <header>
-        <div class="container">
-            <div class="header-content">
-                <div class="logo-area">
-                    <img src="logo-<?= $_SESSION['tema'] ?>.png" alt="EduWeb" class="logo">
-                    <span class="logo-text">EduWeb</span>
-                </div>
-                <nav>
+        <!-- Linha superior -->
+        <div class="header-top">
+            <div class="header-top-content">
+                <nav class="top-nav">
                     <ul>
-                        <li><a href="index.php">Início</a></li>
-                        <li><a href="sobre.php">Sobre</a></li>
-                        <li><a href="cursos.php">Cursos</a></li>
                         <li><a href="noticias.php">Notícias</a></li>
                         <li><a href="eventos.php">Eventos</a></li>
                         <li><a href="contactos.php">Contactos</a></li>
-                        <?php if(isLoggedIn()): ?>
-                            <li><a href="perfil.php">Perfil</a></li>
-                            <?php if(isAdmin()): ?><li><a href="admin/">Admin</a></li><?php endif; ?>
-                            <li><a href="logout.php">Sair</a></li>
-                        <?php else: ?>
-                            <li><a href="login.php">Entrar</a></li>
-                        <?php endif; ?>
                     </ul>
                 </nav>
-                <button class="theme-toggle" onclick="window.location='?toggle_theme=1'">
-                    <?= $_SESSION['tema'] === 'claro' ? '🌙' : '☀️' ?>
-                </button>
+                <div class="top-actions">
+                    <?php if(isLoggedIn()): ?>
+                        <a href="perfil.php">Perfil</a>
+                        <?php if(isAdmin()): ?>
+                            <a href="admin/">Admin</a>
+                        <?php endif; ?>
+                    <?php else: ?>
+                        <a href="login.php">Entrar</a>
+                    <?php endif; ?>
+                    <form method="POST" style="display: inline; margin: 0;">
+                        <button type="submit" name="toggle_theme" class="theme-toggle">
+                            <?php echo $_SESSION['tema'] === 'claro' ? '🌙' : '☀️'; ?>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Linha principal -->
+        <div class="header-main">
+            <div class="header-content">
+                <nav class="nav-left main-nav">
+                    <ul>
+                        <li><a href="index.php">Início</a></li>
+                        <li><a href="sobre.php">Sobre Nós</a></li>
+                    </ul>
+                </nav>
+                <div style="width: 200px;"></div>
+                <nav class="nav-right main-nav">
+                    <ul>
+                        <li><a href="cursos.php">Cursos</a></li>
+                        <li><a href="sobre.php">Admissões</a></li>
+                    </ul>
+                </nav>
+            </div>
+            <div class="logo-area">
+                <a href="index.php">
+                    <img src="logo-<?php echo $_SESSION['tema'] === 'claro' ? 'escuro' : 'claro'; ?>.png" alt="EduWeb" class="logo">
+                </a>
             </div>
         </div>
     </header>
+
+    <script>
+    window.addEventListener('load', function() {
+        document.body.classList.add('slide-in');
+        setTimeout(function() {
+            document.body.classList.remove('slide-in');
+        }, 300);
+    });
+    </script>
 
     <main class="container">
         <h2>Entre em Contacto</h2>
