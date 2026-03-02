@@ -30,6 +30,7 @@
             <a href="cursos.php"<?= ($paginaActiva??'')==='cursos'    ? ' class="active"':'' ?>>Cursos</a>
             <a href="noticias.php"<?= ($paginaActiva??'')==='noticias' ? ' class="active"':'' ?>>Notícias</a>
             <a href="eventos.php"<?= ($paginaActiva??'')==='eventos'   ? ' class="active"':'' ?>>Eventos</a>
+            <a href="galeria.php"<?= ($paginaActiva??'')==='galeria' ? ' class="active"':'' ?>>Galeria</a>
             <a href="sobre.php"<?= ($paginaActiva??'')==='sobre'       ? ' class="active"':'' ?>>Sobre</a>
             <a href="faq.php"<?= ($paginaActiva??'')==='faq'           ? ' class="active"':'' ?>>FAQ</a>
             <a href="contactos.php"<?= ($paginaActiva??'')==='contactos' ? ' class="active"':'' ?>>Contactos</a>
