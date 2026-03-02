@@ -1,4 +1,5 @@
 <?php
+
 session_start();
 require_once '../important/config.php';
 require_once '_tema.php';
@@ -24,6 +25,17 @@ $cursos = $stmt->fetchAll();
 $total_cursos  = $pdo->query("SELECT COUNT(*) FROM cursos WHERE ativo=1")->fetchColumn();
 $total_noticias = $pdo->query("SELECT COUNT(*) FROM noticias WHERE publicado=1")->fetchColumn();
 $total_eventos  = $pdo->query("SELECT COUNT(*) FROM eventos WHERE publicado=1")->fetchColumn();
+
+// Galeria preview
+$stmt = $pdo->query("
+    SELECT imagem_destaque AS imagem, titulo, 'noticia' AS tipo, id
+    FROM noticias WHERE publicado=1 AND imagem_destaque IS NOT NULL AND imagem_destaque != ''
+    UNION ALL
+    SELECT imagem_destaque AS imagem, titulo, 'evento' AS tipo, id
+    FROM eventos WHERE publicado=1 AND imagem_destaque IS NOT NULL AND imagem_destaque != ''
+    ORDER BY RAND() LIMIT 6
+");
+$galeria_preview = $stmt->fetchAll();
 
 $paginaActiva = 'inicio';
 $tituloBase   = 'Início';
@@ -848,6 +860,19 @@ require_once '_header.php';
 </div>
 
 <!-- ═══════════════════════
+     PESQUISA RÁPIDA
+     ═══════════════════════ -->
+<div style="background:var(--cor-fundo);border-bottom:1px solid var(--cor-borda);padding:20px 24px;">
+    <form action="pesquisa.php" method="GET" style="max-width:560px;margin:0 auto;display:flex;gap:8px;">
+        <div style="flex:1;position:relative;display:flex;align-items:center;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:1rem;height:1rem;position:absolute;left:14px;color:var(--cor-texto-claro);pointer-events:none;flex-shrink:0;"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input type="text" name="q" placeholder="Pesquisar cursos, notícias, eventos…" style="width:100%;padding:11px 16px 11px 40px;font-size:.93rem;">
+        </div>
+        <button type="submit" class="btn-hero-secondary" style="padding:11px 22px;font-size:.88rem;border-radius:10px;">Pesquisar</button>
+    </form>
+</div>
+
+<!-- ═══════════════════════
      CURSOS EM DESTAQUE
      ═══════════════════════ -->
 <?php if (!empty($cursos)): ?>
@@ -987,6 +1012,39 @@ require_once '_header.php';
         <?php endif; ?>
     </div>
 </section>
+
+<!-- ═══════════════════════
+     GALERIA PRÉVIA
+     ═══════════════════════ -->
+<?php if (!empty($galeria_preview)): ?>
+<section class="index-section" style="background:var(--cor-fundo-alt);">
+    <div class="section-wrap">
+        <div class="section-header">
+            <div>
+                <div class="section-label">Memórias</div>
+                <h2 class="section-title">Galeria</h2>
+            </div>
+            <a href="galeria.php" class="section-link">
+                Ver galeria completa
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:.85rem;height:.85rem;"><polyline points="9 18 15 12 9 6"/></svg>
+            </a>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px;">
+            <?php foreach ($galeria_preview as $foto): ?>
+            <a href="<?= $foto['tipo'] === 'noticia' ? 'noticia' : 'evento' ?>.php?id=<?= $foto['id'] ?>"
+               style="display:block;height:160px;border-radius:10px;overflow:hidden;background:var(--cor-fundo);border:1px solid var(--cor-borda);">
+                <img src="uploads/<?= htmlspecialchars($foto['imagem']) ?>"
+                     alt="<?= htmlspecialchars($foto['titulo']) ?>"
+                     loading="lazy"
+                     style="width:100%;height:100%;object-fit:cover;transition:transform .35s;"
+                     onmouseover="this.style.transform='scale(1.06)'"
+                     onmouseout="this.style.transform=''">
+            </a>
+            <?php endforeach; ?>
+        </div>
+    </div>
+</section>
+<?php endif; ?>
 
 <!-- ═══════════════════════
      CTA FINAL
