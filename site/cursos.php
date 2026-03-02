@@ -165,7 +165,7 @@ foreach ($cursos as $c) {
                     </div>
                 </div>
                 <?php endforeach; ?>
-            </div>
+             </div>
         </div>
         <?php endforeach; ?>
 
