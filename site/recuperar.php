@@ -1,168 +1,76 @@
 <?php
 session_start();
-require_once 'conexao.php';
+require_once '../important/config.php';
+require_once '_tema.php';
 
-if(isset($_POST['toggle_theme'])) {
-    $_SESSION['theme'] = ($_SESSION['theme'] ?? 'light') === 'light' ? 'dark' : 'light';
-}
-$theme = $_SESSION['theme'] ?? 'light';
+$mensagem = ''; $tipo = '';
 
-$mensagem = '';
-$tipo = '';
-
-if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['recuperar'])) {
-    $email = $_POST['email'] ?? '';
-    
-    if($email) {
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['recuperar'])) {
+    $email = trim($_POST['email'] ?? '');
+    if ($email) {
         $stmt = $pdo->prepare("SELECT * FROM utilizadores WHERE email = ?");
         $stmt->execute([$email]);
         $user = $stmt->fetch();
-        
-        if($user) {
-            // Gerar nova password temporária
-            $nova_password = bin2hex(random_bytes(4)); // 8 caracteres
-            $password_hash = password_hash($nova_password, PASSWORD_DEFAULT);
-            
-            $stmt = $pdo->prepare("UPDATE utilizadores SET password = ? WHERE id = ?");
-            $stmt->execute([$password_hash, $user['id']]);
-            
-            // Aqui normalmente enviarias por email, mas vamos mostrar na tela
-            $mensagem = "Nova password temporária: <strong>$nova_password</strong><br>Use esta password para entrar e altere-a no seu perfil.";
+        if ($user) {
+            $nova = bin2hex(random_bytes(4));
+            $pdo->prepare("UPDATE utilizadores SET password=? WHERE id=?")
+                ->execute([password_hash($nova, PASSWORD_DEFAULT), $user['id']]);
+            $mensagem = "Password temporária gerada: <strong style='font-family:monospace;letter-spacing:.05em;'>$nova</strong><br><small>Entra com esta password e altera-a no teu perfil.</small>";
             $tipo = 'success';
         } else {
-            $mensagem = 'Email não encontrado no sistema.';
-            $tipo = 'error';
+            $mensagem = 'Não encontrámos nenhuma conta com esse email.'; $tipo = 'error';
         }
     } else {
-        $mensagem = 'Por favor, insira o seu email.';
-        $tipo = 'error';
+        $mensagem = 'Insere o teu email.'; $tipo = 'error';
     }
 }
-?>
-<!DOCTYPE html>
-<html lang="pt" data-theme="<?php echo $theme; ?>">
-<head>
-    <meta charset="utf-8">
-    <title>Recuperar Password - EduWeb</title>
-    <link rel="stylesheet" href="../important/style.css">
-    <style>
-        .recuperar-container {
-            max-width: 450px;
-            margin: 100px auto;
-            padding: 40px;
-            background: var(--cor-fundo-alt);
-            border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-        }
-        .recuperar-header {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-        .recuperar-header img {
-            height: 80px;
-            margin-bottom: 15px;
-        }
-        .mensagem {
-            padding: 15px;
-            border-radius: 6px;
-            margin-bottom: 20px;
-        }
-        .mensagem.success {
-            background: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
-        }
-        .mensagem.error {
-            background: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
-        }
-        .info-box {
-            background: #e7f3ff;
-            border: 1px solid #b3d9ff;
-            color: #004085;
-            padding: 15px;
-            border-radius: 6px;
-            margin-bottom: 20px;
-            font-size: 0.9rem;
-        }
-    </style>
-</head>
-<body class="<?php echo $theme === 'light' ? 'tema-claro' : 'tema-escuro'; ?>">
-    <header>
-        <div class="header-top">
-            <div class="header-top-content">
-                <nav class="top-nav">
-                    <ul>
-                        <li><a href="noticias.php">Notícias</a></li>
-                        <li><a href="eventos.php">Eventos</a></li>
-                        <li><a href="contactos.php">Contactos</a></li>
-                    </ul>
-                </nav>
-                <div class="top-actions">
-                    <form method="POST" style="display: inline; margin: 0;">
-                        <button type="submit" name="toggle_theme" class="theme-toggle">
-                            <?php echo $theme === 'light' ? '🌙' : '☀️'; ?>
-                        </button>
-                    </form>
-                </div>
-            </div>
-        </div>
-        
-        <div class="header-main">
-            <div class="header-content">
-                <nav class="nav-left main-nav">
-                    <ul>
-                        <li><a href="index.php">Início</a></li>
-                        <li><a href="sobre.php">Sobre Nós</a></li>
-                    </ul>
-                </nav>
-                <div style="width: 200px;"></div>
-                <nav class="nav-right main-nav">
-                    <ul>
-                        <li><a href="cursos.php">Cursos</a></li>
-                        <li><a href="sobre.php">Admissões</a></li>
-                    </ul>
-                </nav>
-            </div>
-            <div class="logo-area">
-                <a href="index.php">
-                    <img src="logo-<?php echo $theme === 'light' ? 'escuro' : 'claro'; ?>.png" alt="EduWeb" class="logo">
-                </a>
-            </div>
-        </div>
-    </header>
 
-    <div class="container">
-        <div class="recuperar-container">
-            <div class="recuperar-header">
-                <img src="logo-<?php echo $theme === 'light' ? 'escuro' : 'claro'; ?>.png" alt="EduWeb">
-                <h2>Recuperar Password</h2>
+$paginaActiva = '';
+$tituloBase   = 'Recuperar Password';
+$extraCSS = '<style>
+.auth-wrap{min-height:calc(100vh - 64px);display:flex;align-items:center;justify-content:center;padding:40px 20px;background:var(--cor-fundo);}
+.auth-card{width:100%;max-width:420px;background:var(--cor-fundo-alt);border:1px solid var(--cor-borda);border-radius:20px;padding:44px 40px;box-shadow:0 8px 40px rgba(0,0,0,0.08);}
+.auth-logo{display:flex;justify-content:center;margin-bottom:28px;}
+.auth-logo img{height:44px;}
+.auth-title{font-size:1.5rem;font-weight:700;text-align:center;color:var(--cor-texto);margin-bottom:6px;letter-spacing:-0.01em;}
+.auth-sub{text-align:center;color:var(--cor-texto-claro);font-size:.88rem;margin-bottom:32px;}
+.auth-info{background:var(--cor-fundo);border:1px solid var(--cor-borda);border-radius:10px;padding:14px 16px;margin-bottom:24px;font-size:.85rem;color:var(--cor-texto-claro);display:flex;gap:10px;align-items:flex-start;}
+.auth-links{text-align:center;margin-top:24px;font-size:.88rem;}
+.auth-links a{color:var(--cor-principal);text-decoration:none;font-weight:500;}
+@media(max-width:480px){.auth-card{padding:32px 20px;}}
+</style>';
+require_once '_header.php';
+?>
+
+<div class="auth-wrap">
+    <div class="auth-card">
+        <div class="auth-logo">
+            <img src="logo-<?= $_SESSION['tema'] === 'claro' ? 'claro' : 'escuro' ?>.png" alt="EduWeb">
+        </div>
+        <h1 class="auth-title">Recuperar password</h1>
+        <p class="auth-sub">Vamos gerar uma password temporária</p>
+
+        <div class="auth-info">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:1rem;height:1rem;flex-shrink:0;margin-top:1px;color:var(--cor-principal);"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            <span>Insere o email associado à tua conta. Receberás uma password temporária para aceder.</span>
+        </div>
+
+        <?php if ($mensagem): ?>
+            <div class="mensagem <?= $tipo ?>"><?= $mensagem ?></div>
+        <?php endif; ?>
+
+        <form method="POST" style="max-width:none;">
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" required autofocus placeholder="o.teu@email.pt">
             </div>
-            
-            <div class="info-box">
-                ℹ️ Insira o seu email e receberá uma nova password temporária.
-            </div>
-            
-            <?php if($mensagem): ?>
-                <div class="mensagem <?php echo $tipo; ?>">
-                    <?php echo $mensagem; ?>
-                </div>
-            <?php endif; ?>
-            
-            <form method="POST">
-                <div class="form-group">
-                    <label for="email">Email:</label>
-                    <input type="email" id="email" name="email" required autofocus>
-                </div>
-                
-                <button type="submit" name="recuperar" class="btn-login">Recuperar Password</button>
-            </form>
-            
-            <div class="login-footer">
-                <a href="login.php">← Voltar ao login</a>
-            </div>
+            <button type="submit" name="recuperar" class="btn-login">Recuperar Password</button>
+        </form>
+
+        <div class="auth-links">
+            <a href="login.php">← Voltar ao login</a>
         </div>
     </div>
-</body>
-</html>
+</div>
+
+<?php require_once '_footer.php'; ?>

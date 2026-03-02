@@ -1,223 +1,86 @@
 <?php
 session_start();
-require_once 'conexao.php';
+require_once '../important/config.php';
+require_once '_tema.php';
 
-if(isset($_SESSION['user_id'])) {
-    header('Location: index.php');
-    exit;
-}
-
-if(isset($_POST['toggle_theme'])) {
-    $_SESSION['theme'] = ($_SESSION['theme'] ?? 'light') === 'light' ? 'dark' : 'light';
-}
-$theme = $_SESSION['theme'] ?? 'light';
+if (isLoggedIn()) { header('Location: index.php'); exit; }
 
 $erro = '';
-
-if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login'])) {
-    $email = $_POST['email'] ?? '';
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login'])) {
+    $email    = $_POST['email']    ?? '';
     $password = $_POST['password'] ?? '';
-    
-    if($email && $password) {
+    if ($email && $password) {
         $stmt = $pdo->prepare("SELECT * FROM utilizadores WHERE email = ? AND ativo = 1");
         $stmt->execute([$email]);
         $user = $stmt->fetch();
-        
-        if($user && password_verify($password, $user['password'])) {
-            $_SESSION['user_id'] = $user['id'];
-            $_SESSION['user_nome'] = $user['nome'];
-            $_SESSION['user_tipo'] = $user['tipo'];
+        if ($user && password_verify($password, $user['password'])) {
+            $_SESSION['user_id']    = $user['id'];
+            $_SESSION['user_nome']  = $user['nome'];
+            $_SESSION['user_tipo']  = $user['tipo'];
             $_SESSION['user_email'] = $user['email'];
-            
-            if($user['tipo'] === 'admin') {
-                header('Location: admin/index.php');
-            } else {
-                header('Location: index.php');
-            }
+            header($user['tipo'] === 'admin' ? 'Location: ../admin/' : 'Location: index.php');
             exit;
         } else {
-            $erro = 'Email ou password incorretos!';
+            $erro = 'Email ou password incorretos.';
         }
     } else {
-        $erro = 'Preencha todos os campos!';
+        $erro = 'Preencha todos os campos.';
     }
 }
-?>
-<!DOCTYPE html>
-<html lang="pt" data-theme="<?php echo $theme; ?>">
-<head>
-    <meta charset="utf-8">
-    <title>Login - EduWeb</title>
-    <link rel="stylesheet" href="../important/style.css">
-    <style>
-        .login-container {
-            max-width: 450px;
-            margin: 100px auto;
-            padding: 40px;
-            background: var(--cor-fundo-alt);
-            border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-        }
-        .login-header {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-        .login-header img {
-            height: 80px;
-            margin-bottom: 15px;
-        }
-        .login-header h2 {
-            margin: 0;
-            color: var(--cor-texto);
-        }
-        .erro-msg {
-            background: #f8d7da;
-            color: #721c24;
-            padding: 12px;
-            border-radius: 6px;
-            margin-bottom: 20px;
-            border: 1px solid #f5c6cb;
-        }
-        .form-group {
-            margin-bottom: 20px;
-        }
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 500;
-            color: var(--cor-texto);
-        }
-        .form-group input {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid var(--cor-borda);
-            border-radius: 6px;
-            background: var(--cor-fundo);
-            color: var(--cor-texto);
-            font-size: 1rem;
-        }
-        .btn-login {
-            width: 100%;
-            padding: 14px;
-            background: var(--cor-principal);
-            color: white;
-            border: none;
-            border-radius: 6px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
-        .btn-login:hover {
-            background: var(--cor-secundaria);
-        }
-        .login-footer {
-            text-align: center;
-            margin-top: 20px;
-        }
-        .login-footer a {
-            color: var(--cor-principal);
-            text-decoration: none;
-        }
-    </style>
-</head>
-<body class="<?php echo $theme === 'light' ? 'tema-claro' : 'tema-escuro'; ?>">
-    <header>
-        <div class="header-top">
-            <div class="header-top-content">
-                <nav class="top-nav">
-                    <ul>
-                        <li><a href="noticias.php">Notícias</a></li>
-                        <li><a href="eventos.php">Eventos</a></li>
-                        <li><a href="contactos.php">Contactos</a></li>
-                    </ul>
-                </nav>
-                <div class="top-actions">
-                    <form method="POST" style="display: inline; margin: 0;">
-                        <button type="submit" name="toggle_theme" class="theme-toggle">
-                            <?php echo $theme === 'light' ? '🌙' : '☀️'; ?>
-                        </button>
-                    </form>
-                </div>
-            </div>
-        </div>
-        
-        <div class="header-main">
-            <div class="header-content">
-                <nav class="nav-left main-nav">
-                    <ul>
-                        <li><a href="index.php">Início</a></li>
-                        <li><a href="sobre.php">Sobre Nós</a></li>
-                    </ul>
-                </nav>
-                <div style="width: 200px;"></div>
-                <nav class="nav-right main-nav">
-                    <ul>
-                        <li><a href="cursos.php">Cursos</a></li>
-                        <li><a href="sobre.php">Admissões</a></li>
-                    </ul>
-                </nav>
-            </div>
-            <div class="logo-area">
-                <a href="index.php">
-                    <img src="logo-<?php echo $theme === 'light' ? 'escuro' : 'claro'; ?>.png" alt="EduWeb" class="logo">
-                </a>
-            </div>
-        </div>
-    </header>
 
-    <div class="container">
-        <div class="login-container">
-            <div class="login-header">
-                <img src="logo-<?php echo $theme === 'light' ? 'escuro' : 'claro'; ?>.png" alt="EduWeb">
-                <h2>Entrar no EduWeb</h2>
+$paginaActiva = '';
+$tituloBase   = 'Entrar';
+$extraCSS = '<style>
+.auth-wrap{min-height:calc(100vh - 64px);display:flex;align-items:center;justify-content:center;padding:40px 20px;background:var(--cor-fundo);}
+.auth-card{width:100%;max-width:420px;background:var(--cor-fundo-alt);border:1px solid var(--cor-borda);border-radius:20px;padding:44px 40px;box-shadow:0 8px 40px rgba(0,0,0,0.08);}
+.auth-logo{display:flex;justify-content:center;margin-bottom:28px;}
+.auth-logo img{height:44px;}
+.auth-title{font-size:1.5rem;font-weight:700;text-align:center;color:var(--cor-texto);margin-bottom:6px;letter-spacing:-0.01em;}
+.auth-sub{text-align:center;color:var(--cor-texto-claro);font-size:.88rem;margin-bottom:32px;}
+.auth-divider{height:1px;background:var(--cor-borda);margin:24px 0;position:relative;}
+.auth-divider span{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);background:var(--cor-fundo-alt);padding:0 12px;font-size:.78rem;color:var(--cor-texto-claro);}
+.auth-links{text-align:center;margin-top:24px;font-size:.88rem;color:var(--cor-texto-claro);line-height:2;}
+.auth-links a{color:var(--cor-principal);text-decoration:none;font-weight:500;}
+.auth-links a:hover{text-decoration:underline;}
+@media(max-width:480px){.auth-card{padding:32px 24px;}}
+</style>';
+require_once '_header.php';
+?>
+
+<div class="auth-wrap">
+    <div class="auth-card">
+        <div class="auth-logo">
+            <img src="logo-<?= $_SESSION['tema'] === 'claro' ? 'claro' : 'escuro' ?>.png" alt="EduWeb">
+        </div>
+        <h1 class="auth-title">Bem-vindo de volta</h1>
+        <p class="auth-sub">Entra na tua conta EduWeb</p>
+
+        <?php if ($erro): ?>
+            <div class="erro-msg">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:.95rem;height:.95rem;vertical-align:middle;margin-right:6px;"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                <?= htmlspecialchars($erro) ?>
             </div>
-            
-            <?php if($erro): ?>
-                <div class="erro-msg">⚠️ <?php echo $erro; ?></div>
-            <?php endif; ?>
-            
-            <form method="POST">
-                <div class="form-group">
-                    <label for="email">Email:</label>
-                    <input type="email" id="email" name="email" required autofocus>
-                </div>
-                
-                <div class="form-group">
-                    <label for="password">Password:</label>
-                    <input type="password" id="password" name="password" required>
-                </div>
-                
-                <button type="submit" name="login" class="btn-login">Entrar</button>
-            </form>
-            
-            <div class="login-footer">
-                <a href="recuperar.php">Esqueceu a password?</a><br>
-                <p style="margin-top: 15px; color: var(--cor-texto-claro);">
-                    Não tem conta? <a href="registar.php">Criar conta</a>
-                </p>
+        <?php endif; ?>
+
+        <form method="POST" style="max-width:none;">
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" required autofocus autocomplete="email" placeholder="o.teu@email.pt">
             </div>
+            <div class="form-group" style="margin-bottom:8px;">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required autocomplete="current-password" placeholder="••••••••">
+            </div>
+            <div style="text-align:right;margin-bottom:24px;">
+                <a href="recuperar.php" style="font-size:.82rem;color:var(--cor-texto-claro);text-decoration:none;">Esqueceu a password?</a>
+            </div>
+            <button type="submit" name="login" class="btn-login">Entrar</button>
+        </form>
+
+        <div class="auth-links">
+            Não tens conta? <a href="registar.php">Criar conta grátis</a>
         </div>
     </div>
+</div>
 
-    <footer>
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-section">
-                    <h3>EduWeb</h3>
-                    <p>Plataforma educativa inovadora</p>
-                </div>
-                <div class="footer-section">
-                    <h3>Links Rápidos</h3>
-                    <a href="sobre.php">Sobre Nós</a>
-                    <a href="cursos.php">Cursos</a>
-                    <a href="contactos.php">Contactos</a>
-                </div>
-            </div>
-            <div class="footer-bottom">
-                <p>&copy; <?php echo date('Y'); ?> EduWeb. Todos os direitos reservados.</p>
-            </div>
-        </div>
-    </footer>
-</body>
-</html>
+<?php require_once '_footer.php'; ?>
