@@ -48,7 +48,7 @@ require_once '_header.php';
     <div class="login-container" style="max-width:520px;">
         <div class="login-header">
             <img src="logo-<?= $logoImg ?>.png" alt="EduWeb" onerror="this.style.display='none'">
-            <h2>Criar Conta no EduWeb</h2>
+            <h2>Criar Conta</h2>
         </div>
 
         <?php if($mensagem): ?>

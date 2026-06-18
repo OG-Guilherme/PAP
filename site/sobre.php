@@ -385,8 +385,8 @@ require_once '_header.php';
 <!-- ══ Hero ══════════════════════════════════════════════ -->
 <div class="sobre-hero">
     <div class="sobre-hero-label">A nossa escola</div>
-    <h1>Uma comunidade educativa construída<br><em>para o futuro</em></h1>
-    <p>O EduWeb une alunos, professores e famílias numa plataforma pensada para tornar a educação mais acessível, transparente e eficaz.</p>
+    <h1>Escola Secundária EduWeb<br><em>Amadora</em></h1>
+    <p>Fundada com o compromisso de servir a comunidade da Amadora, a nossa escola oferece um ensino de qualidade que prepara os alunos para os desafios do presente e do futuro.</p>
 </div>
 
 <div class="sobre-divider"></div>
@@ -416,10 +416,10 @@ require_once '_header.php';
     <!-- ══ Missão + Foto ══════════════════════════════════ -->
     <div class="sobre-2col">
         <div class="sobre-text-block">
-            <span class="label">Quem somos</span>
-            <h2>Educação de qualidade, acessível a todos</h2>
-            <p>O EduWeb nasceu com um objetivo simples: tornar a informação escolar clara e disponível para toda a comunidade. Alunos, professores e famílias num só sítio.</p>
-            <p>Combinamos tecnologia com práticas pedagógicas modernas para criar um ambiente onde aprender é natural — não uma obrigação burocrática.</p>
+            <span class="label">A nossa missão</span>
+            <h2>Ensino público de qualidade para todos</h2>
+            <p>A Escola EduWeb tem como missão proporcionar a cada aluno um percurso educativo completo, num ambiente seguro, inclusivo e estimulante. Acreditamos que a educação é o principal motor de transformação social.</p>
+            <p>Trabalhamos diariamente para que cada jovem saia desta escola preparado não só academicamente, mas também como cidadão responsável e capaz de contribuir para a sociedade.</p>
         </div>
         <div class="sobre-foto">
             <div class="sobre-foto-placeholder">
@@ -433,9 +433,9 @@ require_once '_header.php';
     <div class="sobre-2col reverse">
         <div class="sobre-text-block">
             <span class="label">A nossa história</span>
-            <h2>Décadas de excelência educativa</h2>
-            <p>Fundada com o compromisso de servir a comunidade da Amadora, a escola tem crescido e adaptado-se às necessidades de cada geração — sem perder a identidade e os valores que a definem.</p>
-            <p>Hoje somos uma referência local, com um corpo docente experiente e uma comunidade de alunos que se orgulham do percurso aqui feito.</p>
+            <h2>Décadas ao serviço da comunidade</h2>
+            <p>Desde a sua fundação, a escola tem crescido e adaptado a sua oferta formativa às necessidades de cada geração — mantendo sempre os valores de rigor, respeito e dedicação ao sucesso dos alunos.</p>
+            <p>Hoje somos uma referência no concelho da Amadora, com um corpo docente experiente e uma comunidade escolar que se orgulha do percurso construído ao longo dos anos.</p>
         </div>
         <div class="sobre-foto">
             <div class="sobre-foto-placeholder">
@@ -551,10 +551,10 @@ require_once '_header.php';
     <!-- ══ CTA final ══════════════════════════════════════ -->
     <div class="sobre-cta">
         <div class="sobre-cta-inner">
-            <h2>Faz parte da nossa comunidade</h2>
-            <p>Explora os cursos disponíveis ou entra em contacto connosco para saber mais.</p>
+            <h2>Interested em ingressar na nossa escola?</h2>
+            <p>Consulta a oferta formativa disponível ou contacta-nos para esclareceres qualquer dúvida sobre admissões e matrículas.</p>
             <div class="sobre-cta-btns">
-                <a href="cursos.php" class="cta-btn-white">Ver Cursos</a>
+                <a href="cursos.php" class="cta-btn-white">Ver Oferta Formativa</a>
                 <a href="contactos.php" class="cta-btn-outline">Contactar a Escola</a>
             </div>
         </div>

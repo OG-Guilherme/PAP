@@ -25,7 +25,7 @@ require_once '_header.php';
 ?>
 
 <div class="container" style="padding:40px 24px;">
-    <h2>Entre em Contacto</h2>
+    <h2>Contacte a Escola</h2>
 
     <div class="contacto-grid">
         <div class="contacto-card"><h3>📧 Email</h3><p><?= SITE_EMAIL ?></p></div>
@@ -35,7 +35,7 @@ require_once '_header.php';
 
     <?= $mensagem ?>
 
-    <h3 style="margin:32px 0 20px;">Envie-nos uma Mensagem</h3>
+    <h3 style="margin:32px 0 20px;">Envie uma Mensagem à Escola</h3>
     <form method="POST">
         <div class="form-group"><label>Nome</label><input type="text" name="nome" required></div>
         <div class="form-group"><label>Email</label><input type="email" name="email" required></div>

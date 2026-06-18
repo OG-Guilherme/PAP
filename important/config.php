@@ -3,7 +3,7 @@
 
 // Configurações do Site
 define('SITE_NAME', 'EduWeb');
-define('SITE_URL', 'http://localhost/eduweb');
+define('SITE_URL', 'http://localhost/PAP');
 define('SITE_EMAIL', 'eduweb@gmail.com');
 define('SITE_TELEFONE', '+351 21 XXX XXXX');
 define('SITE_MORADA', 'Rua da Escola, Amadora, Portugal');

@@ -37,7 +37,7 @@ require_once '_header.php';
     <div class="login-container">
         <div class="login-header">
             <img src="logo-<?= $logoImg ?>.png" alt="EduWeb" onerror="this.style.display='none'">
-            <h2>Entrar no EduWeb</h2>
+            <h2>Acesso à Área Reservada</h2>
         </div>
 
         <?php if ($erro): ?>
@@ -59,7 +59,7 @@ require_once '_header.php';
         <div class="login-footer" style="margin-top:20px;">
             <a href="recuperar.php">Esqueceu a password?</a><br>
             <span style="color:var(--cor-texto-claro);margin-top:10px;display:block;">
-                Não tem conta? <a href="registar.php">Criar conta grátis</a>
+                Ainda não tens conta? <a href="registar.php">Registar</a>
             </span>
         </div>
     </div>
